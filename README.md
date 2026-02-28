@@ -43,6 +43,23 @@ cp .env.example .env
 # 编辑 .env，填入从 https://platform.deepseek.com 获取的 API Key
 ```
 
+**（可选）配置 LangSmith 追踪：**
+
+如果你想追踪完整的 Agent 执行流程（包括 Skills 调用详情），可以启用 LangSmith：
+
+```bash
+# 在 .env 中添加以下配置
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_API_KEY=your-langsmith-api-key-here  # 从 https://smith.langchain.com 获取
+LANGCHAIN_PROJECT=agents-ts
+```
+
+**LangSmith 的好处：**
+- 📊 可视化 Agent 执行流程
+- 🔍 查看每个 skill 何时被读取和使用
+- 📝 记录所有工具调用和 LLM 交互
+- 🐛 调试和性能分析
+
 ### 3. 运行天气 Agent
 
 ```bash
@@ -78,11 +95,24 @@ Skills 是 Deep Agents 的核心能力，采用"渐进式披露"策略：
 
 ### Skills 是否生效的验证方法
 
-运行测试脚本：
+#### 方法一：运行 Agent 查看输出
 
 ```bash
-npx tsx src/agents/weather/test-skills.ts
+npx tsx src/agents/weather/index.ts "对比北京和上海的天气"
 ```
+
+输出会显示：
+- ✅ Skills 配置状态
+- 📊 Skills 使用统计（基于关键词分析）
+- 🔍 LangSmith 追踪链接（如果已启用）
+
+#### 方法二：使用 LangSmith 查看详细追踪
+
+如果启用了 LangSmith，你可以在 [https://smith.langchain.com](https://smith.langchain.com) 看到：
+
+- 🎯 **精确的 skill 调用次数** —— 包括每个 `SKILL.md` 何时被读取
+- 📝 完整的消息流 —— Agent 如何基于 skill 做出决策
+- ⏱️ 性能数据 —— 每个步骤的耗时
 
 **预期效果：**
 

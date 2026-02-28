@@ -52,9 +52,13 @@ export const weatherAgent = agentRegistry.register({
  * 用法：npx tsx src/agents/weather/index.ts
  */
 async function main() {
+  // 检查 LangSmith 配置
+  const langsmithEnabled = process.env.LANGCHAIN_TRACING_V2 === "true";
+  
   console.log("=== 天气查询 Agent (DeepSeek) ===");
   console.log(`📦 Skills 配置: ${skillExists ? "✅ weather-assistant 已配置" : "❌ 未找到 SKILL.md"}`);
   console.log(`📂 Skills 路径: ${skillsDir}`);
+  console.log(`🔍 LangSmith 追踪: ${langsmithEnabled ? "✅ 已启用" : "❌ 未启用 (在 .env 中配置)"}`);
   console.log("");
 
   // 重置统计（开始新的会话）
@@ -85,9 +89,22 @@ async function main() {
   console.log(`\n助手: ${lastMessage.content}\n`);
 
   // 输出 Skills 调用统计
-  console.log(`\n📊 Skills 使用统计:`);
+  console.log(`\n📊 Skills 使用统计 (基于关键词分析):`);
   console.log(SkillTracker.format());
   console.log(`\n💬 消息轮次: ${messages.length}`);
+  
+  if (langsmithEnabled) {
+    const projectName = process.env.LANGCHAIN_PROJECT || "agents-ts";
+    console.log(`\n🔗 查看完整追踪记录 (包括 Skills 详细调用):`);
+    console.log(`   https://smith.langchain.com/o/-/projects/p/${projectName}`);
+  } else {
+    console.log(`\n💡 提示: 启用 LangSmith 可以追踪完整的 Agent 执行流程（包括 Skills 调用）`);
+    console.log(`   1. 访问 https://smith.langchain.com 注册`);
+    console.log(`   2. 在 .env 中添加:`);
+    console.log(`      LANGCHAIN_TRACING_V2=true`);
+    console.log(`      LANGCHAIN_API_KEY=your-api-key`);
+    console.log(`      LANGCHAIN_PROJECT=agents-ts`);
+  }
 }
 
 main().catch(console.error);
