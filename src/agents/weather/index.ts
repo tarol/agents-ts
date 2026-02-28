@@ -1,7 +1,7 @@
 import "dotenv/config";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { createDeepAgent } from "deepagents";
+import { FilesystemBackend } from "deepagents";
 import { createDeepSeekModel } from "../../models/deepseek.js";
 import { getWeather } from "../../tools/weather.js";
 import { agentRegistry } from "../../core/registry.js";
@@ -17,6 +17,9 @@ const projectRoot = path.resolve(__dirname, "../../..");
 const skillsDir = path.posix.join(projectRoot.split(path.sep).join("/"), "skills");
 
 const model = createDeepSeekModel({ temperature: 0 });
+
+// 创建 FilesystemBackend，让 Skills 能够从文件系统读取 SKILL.md
+const backend = new FilesystemBackend({ rootDir: projectRoot });
 
 const systemPrompt = `你是一个专业的天气助手。你的职责是：
 
@@ -37,6 +40,7 @@ export const weatherAgent = agentRegistry.register({
   tools: [getWeather],
   model,
   skills: [skillsDir],
+  backend,
 });
 
 /**

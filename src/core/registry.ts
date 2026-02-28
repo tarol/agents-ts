@@ -19,6 +19,8 @@ export interface AgentConfig {
   subagents?: any[];
   /** Skills 路径列表（POSIX 格式） */
   skills?: string[];
+  /** Backend 配置（用于支持 Skills、文件系统等） */
+  backend?: any;
 }
 
 /**
@@ -38,6 +40,7 @@ class AgentRegistry {
       tools: config.tools,
       subagents: config.subagents,
       ...(config.skills ? { skills: config.skills } : {}),
+      ...(config.backend ? { backend: config.backend } : {}),
     });
 
     this.agents.set(config.name, agent);
