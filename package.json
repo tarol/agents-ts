@@ -1,0 +1,25 @@
+{
+  "name": "lang-agents",
+  "version": "0.1.0",
+  "description": "Multi-agent management project powered by LangChain Deep Agents and DeepSeek",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "dev:weather": "npx tsx src/agents/weather/index.ts"
+  },
+  "dependencies": {
+    "deepagents": "^1.8.1",
+    "langchain": "^1.2.26",
+    "@langchain/core": "^1.1.25",
+    "@langchain/langgraph": "^1.1.4",
+    "@langchain/openai": "^1.2.8",
+    "zod": "^4.3.6",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@tsconfig/recommended": "^1.0.8",
+    "@types/node": "^22.15.0",
+    "tsx": "^4.19.0"
+  }
+}
