@@ -1,4 +1,6 @@
 import "dotenv/config";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { createDeepAgent } from "deepagents";
 import { createDeepSeekModel } from "../../models/deepseek.js";
 import { getWeather } from "../../tools/weather.js";
@@ -7,8 +9,12 @@ import { agentRegistry } from "../../core/registry.js";
 /**
  * 天气查询 Agent
  *
- * 使用 DeepSeek 模型 + 天气工具，支持自然语言查询天气
+ * 使用 DeepSeek 模型 + 天气工具 + weather-assistant skill
  */
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.resolve(__dirname, "../../..");
+const skillsDir = path.posix.join(projectRoot.split(path.sep).join("/"), "skills");
 
 const model = createDeepSeekModel({ temperature: 0 });
 
@@ -23,13 +29,14 @@ const systemPrompt = `你是一个专业的天气助手。你的职责是：
 - 始终使用 get_weather 工具来获取天气数据
 - 不要编造天气数据`;
 
-/** 创建并注册天气 Agent */
+/** 创建并注册天气 Agent（加载 weather-assistant skill） */
 export const weatherAgent = agentRegistry.register({
   name: "weather-agent",
   description: "天气查询 Agent — 使用 DeepSeek 模型，支持自然语言查询城市天气",
   systemPrompt,
   tools: [getWeather],
   model,
+  skills: [skillsDir],
 });
 
 /**

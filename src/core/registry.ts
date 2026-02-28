@@ -17,6 +17,8 @@ export interface AgentConfig {
   model: any;
   /** 子 Agent 列表 */
   subagents?: any[];
+  /** Skills 路径列表（POSIX 格式） */
+  skills?: string[];
 }
 
 /**
@@ -35,6 +37,7 @@ class AgentRegistry {
       systemPrompt: config.systemPrompt,
       tools: config.tools,
       subagents: config.subagents,
+      ...(config.skills ? { skills: config.skills } : {}),
     });
 
     this.agents.set(config.name, agent);
