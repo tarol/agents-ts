@@ -8,10 +8,10 @@
  *   ├── models/         # LLM 模型封装（DeepSeek 等）
  *   ├── tools/          # 可复用的工具定义
  *   ├── agents/         # 各个 Agent 实现（每个 Agent 一个文件夹）
- *   │   └── weather/    # 天气查询 Agent
+ *   │   └── assistant/  # 通用助理 Agent（天气 + 股价）
  *   └── index.ts        # 统一导出
  */
 
 export { agentRegistry, type AgentConfig } from "./core/index.js";
 export { createDeepSeekModel } from "./models/index.js";
-export { getWeather } from "./tools/index.js";
+export { getWeather, getStockPrice } from "./tools/index.js";

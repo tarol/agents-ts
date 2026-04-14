@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "dev:weather": "npx tsx src/agents/weather/index.ts"
+    "dev": "npx tsx src/agents/assistant/index.ts"
   },
   "dependencies": {
     "@langchain/core": "^1.1.25",
